@@ -20,7 +20,7 @@ setuptools.setup(
     python_requires=">=3.8",
     install_requires=[
         "bitarray",
-        "datasets==3.6.0",
+        "datasets>=3.1.0,<4.0.0",
         "flask",
         "GitPython",
         "python-dotenv",
