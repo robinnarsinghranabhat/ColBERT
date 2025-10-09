@@ -18,7 +18,14 @@ class Arguments():
         self.add_argument('--experiment', dest='experiment', default='dirty')
         self.add_argument('--run', dest='run', default=Run.name)
 
-        self.add_argument('--local_rank', dest='rank', default=-1, type=int)
+        # self.add_argument('--local-rank', dest='rank', default=-1, type=int)
+        # self.add_argument('--local-rank', dest='rank', default=-1, type=int)
+
+        # self.add_argument("--local-rank", "--local_rank", type=int)
+        self.add_argument('--local_rank', '--local-rank', dest='rank', default=-1, type=int)
+
+
+
 
     def add_model_parameters(self):
         # Core Arguments

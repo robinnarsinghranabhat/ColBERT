@@ -31,7 +31,7 @@ def main():
             assert args.collection and args.queries
 
             args.queries = load_queries(args.queries)
-            args.collection = load_collection(args.collection)
+            args.collection = load_collection(args.collection, as_dict=True)
             args.topK_pids, args.qrels = load_topK_pids(args.topK, args.qrels)
 
         else:
