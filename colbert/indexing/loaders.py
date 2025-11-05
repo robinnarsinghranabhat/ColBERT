@@ -23,6 +23,7 @@ def get_parts(directory):
 
 
 def load_doclens(directory, flatten=True):
+    print("#> Loading doclens from", directory)
     parts, _, _ = get_parts(directory)
 
     doclens_filenames = [os.path.join(directory, 'doclens.{}.json'.format(filename)) for filename in parts]
