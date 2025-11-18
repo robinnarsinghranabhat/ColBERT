@@ -14,7 +14,6 @@ class RunSettings:
     The defaults here have a special status in Run(), which initially calls assign_defaults(),
     so these aren't soft defaults in that specific context.
     """
-
     overwrite: bool = DefaultVal(False)
 
     root: str = DefaultVal(os.path.join(os.getcwd(), "experiments"))

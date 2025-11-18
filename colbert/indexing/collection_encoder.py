@@ -12,7 +12,6 @@ class CollectionEncoder:
 
     def encode_passages(self, passages):
         Run().print(f"#> Encoding {len(passages)} passages..")
-
         if len(passages) == 0:
             return None, None
 
@@ -48,5 +47,5 @@ class CollectionEncoder:
 
         #     doclens = [d.size(0) for d in embs]
         #     embs = torch.cat(embs)
-
+        Run().print(f"#> Finished Encoding passages..")
         return embs, doclens
