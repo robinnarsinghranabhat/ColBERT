@@ -131,7 +131,7 @@ class Checkpoint(ColBERT):
         protected_tokens=0,
         clustering_mode: str = "hierarchical",
     ):
-        assert keep_dims in [True, False, "flatten"]
+        assert keep_dims in [True, False, "flatten", "return_mask"]
         assert clustering_mode in ["hierarchical"]
 
         if bsize:
@@ -147,11 +147,25 @@ class Checkpoint(ColBERT):
 
             keep_dims_ = "return_mask" if keep_dims == "flatten" else keep_dims
             batches = [
-                self.doc(input_ids, attention_mask, keep_dims=keep_dims_, to_cpu=to_cpu)
+                self.doc(input_ids, attention_mask, keep_dims=keep_dims, to_cpu=to_cpu)
                 for input_ids, attention_mask in tqdm(
                     text_batches, disable=not showprogress
                 )
             ]
+
+            D, mask = [], []
+
+            for D_, mask_ in batches:
+                D.append(D_)
+                mask.append(mask_)
+
+            reverse_indices = reverse_indices.to('cpu')
+            D, mask = (
+                torch.cat(D)[reverse_indices],
+                torch.cat(mask)[reverse_indices],
+            )
+
+            return D, mask
 
             if keep_dims is True:
                 D = _stack_3D_tensors(batches)
