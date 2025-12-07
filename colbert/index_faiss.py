@@ -7,6 +7,10 @@ from colbert.utils.parser import Arguments
 from colbert.indexing.faiss import index_faiss
 from colbert.indexing.loaders import load_doclens
 
+import warnings
+warnings.filterwarnings('ignore')
+
+
 
 def main():
     random.seed(12345)

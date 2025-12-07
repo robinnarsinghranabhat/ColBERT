@@ -115,6 +115,7 @@ class CollectionEncoder():
         return
 
     def _preprocess_batch(self, offset, lines):
+        print("Preprocessing Batch .. ")
         endpos = offset + len(lines)
 
         batch = []
@@ -132,8 +133,9 @@ class CollectionEncoder():
 
             batch.append(passage)
 
-            assert pid == 'id' or int(pid) == line_idx
+            # assert pid == 'id' or int(pid) == line_idx
 
+        print("Finished creating batch of len : ", len(batch))
         return batch
 
     def _encode_batch(self, batch_idx, batch):

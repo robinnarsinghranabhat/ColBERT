@@ -3,6 +3,8 @@ import time
 import math
 import faiss
 import torch
+import warnings
+warnings.filterwarnings('ignore')
 
 import numpy as np
 
