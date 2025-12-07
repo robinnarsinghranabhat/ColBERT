@@ -40,6 +40,8 @@ def load_qrels(qrels_path):
     with open(qrels_path, mode='r', encoding="utf-8") as f:
         for line in f:
             qid, x, pid, y = map(int, line.strip().split('\t'))
+            if y == 0:
+                continue
             assert x == 0 and y == 1
             qrels[qid] = qrels.get(qid, [])
             qrels[qid].append(pid)
@@ -106,13 +108,13 @@ def load_topK_pids(topK_path, qrels):
 
             assert len(rest) in [1, 2, 3]
 
-            if len(rest) > 1:
-                *_, label = rest
-                label = int(label)
-                assert label in [0, 1]
+            # if len(rest) > 1:
+            #     *_, label = rest
+            #     label = int(label)
+            #     assert label in [0, 1]
 
-                if label >= 1:
-                    topK_positives[qid].append(pid)
+            #     if label >= 1:
+            #         topK_positives[qid].append(pid)
 
         print()
 
@@ -150,10 +152,12 @@ def load_topK_pids(topK_path, qrels):
     return topK_pids, topK_positives
 
 
-def load_collection(collection_path):
+def load_collection(collection_path, as_dict=False):
     print_message("#> Loading collection...")
 
     collection = []
+    if as_dict:
+        collection = {}
 
     with open(collection_path) as f:
         for line_idx, line in enumerate(f):
@@ -161,13 +165,16 @@ def load_collection(collection_path):
                 print(f'{line_idx // 1000 // 1000}M', end=' ', flush=True)
 
             pid, passage, *rest = line.strip().split('\t')
-            assert pid == 'id' or int(pid) == line_idx
-
+            
             if len(rest) >= 1:
                 title = rest[0]
                 passage = title + ' | ' + passage
 
-            collection.append(passage)
+            if as_dict:
+                collection[int(pid)] = passage
+            else:
+                assert pid == 'id' or int(pid) == line_idx
+                collection.append(passage)
 
     print()
 
