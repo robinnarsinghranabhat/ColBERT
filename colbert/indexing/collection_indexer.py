@@ -63,7 +63,6 @@ class CollectionIndexer():
             self.setup() # Computes and saves plan for whole collection
             distributed.barrier(self.rank)
             print_memory_stats(f'RANK:{self.rank}')
-
             if not self.config.resume or not self.saver.try_load_codec():
                 self.train(shared_lists) # Trains centroids from selected passages
             distributed.barrier(self.rank)
@@ -133,7 +132,6 @@ class CollectionIndexer():
     def _sample_embeddings(self, sampled_pids):
         local_pids = self.collection.enumerate(rank=self.rank)
         local_sample = [passage for pid, passage in local_pids if pid in sampled_pids]
-
         local_sample_embs, doclens = self.encoder.encode_passages(local_sample)
 
         if torch.cuda.is_available():
@@ -284,7 +282,7 @@ class CollectionIndexer():
         do_fork_for_faiss = False  # set to True to free faiss GPU-0 memory at the cost of one more copy of `sample`.
 
         args_ = [self.config.dim, self.num_partitions, self.config.kmeans_niters]
-
+        # import 
         if do_fork_for_faiss:
             # For this to work reliably, write the sample to disk. Pickle may not handle >4GB of data.
             # Delete the sample file after work is done.
@@ -499,6 +497,7 @@ class CollectionIndexer():
 
 def compute_faiss_kmeans(dim, num_partitions, kmeans_niters, shared_lists, return_value_queue=None):
     use_gpu = torch.cuda.is_available()
+    
     kmeans = faiss.Kmeans(dim, num_partitions, niter=kmeans_niters, gpu=use_gpu, verbose=True, seed=123)
 
     sample = shared_lists[0][0]

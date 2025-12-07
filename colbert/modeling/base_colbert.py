@@ -35,7 +35,9 @@ class BaseColBERT(torch.nn.Module):
         
         self.model = HF_ColBERT.from_pretrained(name_or_path, colbert_config=self.colbert_config)
         self.model.to(DEVICE)
-        self.raw_tokenizer = AutoTokenizer.from_pretrained(name_or_path)
+        # self.raw_tokenizer = AutoTokenizer.from_pretrained(name_or_path)
+        ## Can also use this >> same effect >> bert-base-uncased
+        self.raw_tokenizer = AutoTokenizer.from_pretrained("colbert-ir/colbertv2.0")
 
         self.eval()
 
